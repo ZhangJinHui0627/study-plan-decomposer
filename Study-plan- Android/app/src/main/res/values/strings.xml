@@ -7,7 +7,7 @@
     <string name="btn_parse">解析并添加</string>
     <string name="empty_tasks">还没有学习任务\n快去输入计划吧</string>
     <string name="profile_desc">学习计划智能拆解与提醒 App\n\n帮助大学生将自然语言学习计划拆解为结构化任务，支持提醒与进度管理。\n\n开发者：张锦慧\n技术栈：Android 原生 Java + SQLite</string>
-    <string name="version_name">alpha-2</string>
+    <string name="version_name">v1.0</string>
     <string name="dev_signature">开发者：张锦慧</string>
     <string name="clear_confirm">确定要清空全部任务吗？此操作不可恢复。</string>
     <string name="menu_about">关于应用</string>

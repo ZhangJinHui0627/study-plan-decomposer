@@ -9,7 +9,7 @@ import android.content.Context;
  */
 public class VersionConfig {
     public static final int VERSION_CODE = 1;
-    private static String VERSION_NAME = "alpha-2";
+    private static String VERSION_NAME = "v1.0";
 
     public static void init(Context context) {
         VERSION_NAME = context.getString(R.string.version_name);

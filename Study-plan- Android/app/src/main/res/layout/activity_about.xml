@@ -75,7 +75,7 @@
                 android:id="@+id/tv_version"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                    android:text="alpha-2"
+                android:text="v1.0"
                 android:textSize="14sp"
                 android:textColor="#5F6368"
                 android:layout_marginTop="4dp"
@@ -134,7 +134,7 @@
                     android:id="@+id/tv_dev_version"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="版本：alpha-2"
+                    android:text="版本：v1.0"
                     android:textSize="14sp"
                     android:textColor="#5F6368"
                     android:layout_marginBottom="4dp" />
@@ -215,6 +215,15 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="12dp"
                         android:text="alpha-2：统一任务卡片状态、计时与弹窗交互样式；修复无时长任务秒完成、无绑定计时跑马灯缺失等问题；新增统计页状态概览与专注建议，并优化学科词库及清空任务弹窗布局。"
+                        android:textSize="14sp"
+                        android:textColor="#5F6368"
+                        android:lineSpacingExtra="4dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="12dp"
+                        android:text="v1.0：正式发布版本，优化了性能并修复了已知问题。"
                         android:textSize="14sp"
                         android:textColor="#5F6368"
                         android:lineSpacingExtra="4dp" />
