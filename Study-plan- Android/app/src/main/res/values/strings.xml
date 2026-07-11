@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">学习计划拆解</string>
+    <string name="app_name">Study-plan</string>
     <string name="tab_home">首页</string>
     <string name="tab_stats">统计</string>
     <string name="tab_profile">我的</string>
