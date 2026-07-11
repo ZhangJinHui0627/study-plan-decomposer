@@ -41,6 +41,7 @@ public class SettingsActivity extends AppCompatActivity {
     private SwitchCompat swReminder, swVibrate;
     private android.widget.ImageView dialogAvatarView;
     private View dialogAvatarFrame;
+    private TextView dialogAvatarFallback;
     private Bitmap pendingAvatarBitmap;
     private int pendingImageTint;
     private int pendingFrameColor;
@@ -251,6 +252,19 @@ public class SettingsActivity extends AppCompatActivity {
         avatarLp.gravity = android.view.Gravity.CENTER;
         avatarFrame.addView(ivAvatar, avatarLp);
 
+        TextView avatarFallback = new TextView(this);
+        avatarFallback.setGravity(android.view.Gravity.CENTER);
+        avatarFallback.setText("添加图片");
+        avatarFallback.setTextColor(Color.parseColor("#5F6368"));
+        avatarFallback.setTextSize(12);
+        GradientDrawable fallbackBackground = new GradientDrawable();
+        fallbackBackground.setShape(GradientDrawable.OVAL);
+        fallbackBackground.setColor(Color.WHITE);
+        avatarFallback.setBackground(fallbackBackground);
+        FrameLayout.LayoutParams fallbackLp = new FrameLayout.LayoutParams(avatarSize, avatarSize);
+        fallbackLp.gravity = android.view.Gravity.CENTER;
+        avatarFrame.addView(avatarFallback, fallbackLp);
+
         View glassFrame = new View(this);
         int frameSize = (int) (104 * density);
         FrameLayout.LayoutParams frameLp = new FrameLayout.LayoutParams(frameSize, frameSize);
@@ -260,7 +274,8 @@ public class SettingsActivity extends AppCompatActivity {
         layout.addView(avatarFrame);
         dialogAvatarView = ivAvatar;
         dialogAvatarFrame = glassFrame;
-        applyAvatarPreview(ivAvatar, glassFrame, loadAvatarBitmap(), pendingImageTint, pendingFrameColor);
+        dialogAvatarFallback = avatarFallback;
+        applyAvatarPreview(ivAvatar, glassFrame, avatarFallback, loadAvatarBitmap(), pendingImageTint, pendingFrameColor);
 
         android.widget.Button btnAvatar = new android.widget.Button(this);
         btnAvatar.setText("更换头像");
@@ -444,7 +459,7 @@ public class SettingsActivity extends AppCompatActivity {
                 }
                 pendingAvatarBitmap = scaled;
                 if (dialogAvatarView != null) {
-                    applyAvatarPreview(dialogAvatarView, dialogAvatarFrame, pendingAvatarBitmap,
+                    applyAvatarPreview(dialogAvatarView, dialogAvatarFrame, dialogAvatarFallback, pendingAvatarBitmap,
                             pendingImageTint, pendingFrameColor);
                 }
                 Toast.makeText(this, "头像已加入预览，点击保存后生效", Toast.LENGTH_SHORT).show();
@@ -477,7 +492,7 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    private void applyAvatarPreview(ImageView imageView, View frameView, Bitmap bitmap,
+    private void applyAvatarPreview(ImageView imageView, View frameView, TextView fallbackText, Bitmap bitmap,
                                     int imageTint, int frameColor) {
         android.graphics.drawable.GradientDrawable clip = new android.graphics.drawable.GradientDrawable();
         clip.setShape(android.graphics.drawable.GradientDrawable.OVAL);
@@ -485,15 +500,19 @@ public class SettingsActivity extends AppCompatActivity {
         imageView.setBackground(clip);
         imageView.setClipToOutline(true);
         if (bitmap == null) {
-            imageView.setImageResource(R.drawable.bg_circle_avatar);
+            imageView.setVisibility(View.GONE);
+            imageView.setImageDrawable(null);
             imageView.clearColorFilter();
+            fallbackText.setVisibility(View.VISIBLE);
         } else {
+            imageView.setVisibility(View.VISIBLE);
             imageView.setImageBitmap(bitmap);
             if (imageTint == Color.TRANSPARENT) {
                 imageView.clearColorFilter();
             } else {
                 imageView.setColorFilter(new PorterDuffColorFilter(imageTint, PorterDuff.Mode.SRC_ATOP));
             }
+            fallbackText.setVisibility(View.GONE);
         }
         android.graphics.drawable.GradientDrawable frame = new android.graphics.drawable.GradientDrawable();
         frame.setShape(android.graphics.drawable.GradientDrawable.OVAL);

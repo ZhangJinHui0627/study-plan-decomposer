@@ -49,14 +49,6 @@ public class AboutActivity extends AppCompatActivity {
             tvVersion.setText(VersionConfig.getVersionName());
         }
 
-        // 关于页面头像同步
-        android.widget.ImageView ivAvatar = findViewById(R.id.iv_avatar);
-        android.view.View vAvatarBg = findViewById(R.id.v_avatar_bg);
-        android.widget.TextView tvAvatarText = findViewById(R.id.tv_avatar_text);
-        if (ivAvatar != null && vAvatarBg != null && tvAvatarText != null) {
-            SettingsActivity.renderSavedAvatar(this, ivAvatar, vAvatarBg, tvAvatarText);
-        }
-
         // 版本历史折叠展开控制
         View itemVersionHistory = findViewById(R.id.item_version_history);
         android.widget.ImageView ivArrowVersion = findViewById(R.id.iv_arrow_version);

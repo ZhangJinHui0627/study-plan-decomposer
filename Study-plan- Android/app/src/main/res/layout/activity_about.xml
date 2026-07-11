@@ -30,38 +30,6 @@
             android:orientation="vertical"
             android:gravity="center_horizontal">
 
-            <FrameLayout
-                android:id="@+id/fl_avatar"
-                android:layout_width="96dp"
-                android:layout_height="96dp"
-                android:clipChildren="false"
-                android:layout_marginBottom="16dp"
-                android:foreground="?attr/selectableItemBackgroundBorderless"
-                android:clickable="true"
-                android:focusable="true">
-
-                <com.example.studyplan.AvatarFrameView
-                    android:id="@+id/v_avatar_bg"
-                    android:layout_width="88dp"
-                    android:layout_height="88dp"
-                    android:layout_gravity="center" />
-                <ImageView
-                    android:id="@+id/iv_avatar"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_gravity="center"
-                    android:scaleType="centerCrop" />
-                <TextView
-                    android:id="@+id/tv_avatar_text"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:gravity="center"
-                    android:text="学"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
-            </FrameLayout>
-
             <TextView
                 android:id="@+id/tv_app_name"
                 android:layout_width="wrap_content"

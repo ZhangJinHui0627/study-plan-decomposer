@@ -74,7 +74,7 @@ public class AvatarFrameView extends View {
         float radius = Math.min(getWidth(), getHeight()) / 2f - dp(2f);
         if (fallback) {
             Paint fill = new Paint(Paint.ANTI_ALIAS_FLAG);
-            fill.setColor(getResources().getColor(R.color.primary));
+            fill.setColor(Color.WHITE);
             canvas.drawCircle(cx, cy, radius - dp(3f), fill);
         }
 

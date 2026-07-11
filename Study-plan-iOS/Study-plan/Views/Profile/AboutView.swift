@@ -1,104 +1,125 @@
 import SwiftUI
 
 struct AboutView: View {
-    @EnvironmentObject private var store: StudyPlanStore
     @Environment(\.dismiss) private var dismiss
     @State private var isHistoryExpanded = false
 
     var body: some View {
         NavigationStack {
             ScrollView {
-                VStack(spacing: 24) {
-                    // 头像同步显示，对齐 Android
-                    AvatarFrameView(
-                        text: store.avatarText,
-                        frameColorName: store.avatarFrameColor,
-                        imageData: store.avatarImageData
-                    )
-                    .frame(width: 96, height: 96)
-                    .padding(.top, 20)
-                    
-                    VStack(spacing: 8) {
+                VStack(spacing: 16) {
+                    VStack(spacing: 4) {
                         Text("学习计划拆解")
-                            .font(.system(size: 22, weight: .bold))
+                            .font(.system(size: 24, weight: .bold))
                             .foregroundStyle(StudyPlanTheme.textPrimary)
-                        
-                        Text("当前版本：alpha-2")
-                            .font(.system(size: 14))
+
+                        Text("v1.0")
+                            .font(.system(size: 15))
                             .foregroundStyle(StudyPlanTheme.textSecondary)
                     }
-                    
-                    Text("把目标拆成今天就能完成的小任务，让学习更有条理。")
-                        .multilineTextAlignment(.center)
-                        .font(.system(size: 14))
-                        .foregroundStyle(StudyPlanTheme.textSecondary)
-                        .padding(.horizontal, 30)
-                    
-                    // 版本历史折叠展开控制，对齐 Android
-                    VStack(alignment: .leading, spacing: 0) {
-                        DisclosureGroup(isExpanded: $isHistoryExpanded) {
-                            VStack(alignment: .leading, spacing: 16) {
-                                Divider().padding(.vertical, 8)
-                                
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("alpha-2 更新")
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundStyle(StudyPlanTheme.textPrimary)
-                                    
-                                    Group {
-                                        Text("• 任务卡片支持搜索、展开详情、拖拽排序、左右滑动操作和批量删除。")
-                                        Text("• 专注计时支持倒计时、正计时、溢出计时、独立计时和任务绑定计时。")
-                                        Text("• 未填写任务时长时，开始计时会提示输入例如“25分钟”，避免任务立即结束。")
-                                        Text("• 独立计时同样显示屏幕边框跑马灯，且边框圆角适配不同设备。")
-                                        Text("• 统计页新增学习小结、今日专注建议和任务状态概览。")
-                                        Text("• 统一弹窗、胶囊按钮和任务卡片视觉样式，并优化学科词库管理布局。")
-                                    }
-                                    .font(.system(size: 13))
-                                    .foregroundStyle(StudyPlanTheme.textSecondary)
-                                    .padding(.leading, 4)
-                                }
-                                
-                                VStack(alignment: .leading, spacing: 8) {
-                                    Text("alpha-1 更新")
-                                        .font(.system(size: 14, weight: .bold))
-                                        .foregroundStyle(StudyPlanTheme.textPrimary)
-                                    
-                                    Text("• 完成首个主要功能版本，包含任务拆解、专注计时、提醒、日历同步、统计和个人设置。")
-                                        .font(.system(size: 13))
-                                        .foregroundStyle(StudyPlanTheme.textSecondary)
-                                        .padding(.leading, 4)
-                                }
-                            }
-                            .padding(.top, 4)
-                        } label: {
-                            HStack {
-                                Image(systemName: "clock.arrow.circlepath")
-                                    .foregroundStyle(StudyPlanTheme.primary)
-                                    .frame(width: 24)
-                                Text("版本历史")
-                                    .font(.system(size: 15, weight: .semibold))
-                                    .foregroundStyle(StudyPlanTheme.textPrimary)
-                                Spacer()
-                            }
-                        }
-                    }
-                    .padding(16)
-                    .glassCard()
-                    .padding(.horizontal, 16)
-                    
-                    Spacer()
+                    .padding(.top, 34)
+                    .padding(.bottom, 18)
+
+                    aboutCard
+                    versionHistoryCard
                 }
+                .padding(.horizontal, 16)
+                .padding(.bottom, 32)
             }
             .background(StudyPlanTheme.background)
             .navigationTitle("关于")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
-                ToolbarItem(placement: .confirmationAction) {
-                    Button("完成") {
+                ToolbarItem(placement: .cancellationAction) {
+                    Button {
                         dismiss()
+                    } label: {
+                        Image(systemName: "chevron.backward")
                     }
+                    .accessibilityLabel("返回")
                 }
             }
         }
+    }
+
+    private var aboutCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Text("关于应用")
+                .font(.system(size: 16, weight: .bold))
+                .foregroundStyle(StudyPlanTheme.textPrimary)
+                .padding(.bottom, 8)
+
+            Text("学习计划智能拆解与提醒 App\n\n帮助大学生将自然语言学习计划拆解为结构化任务，支持提醒与进度管理。")
+                .font(.system(size: 14))
+                .foregroundStyle(StudyPlanTheme.textSecondary)
+                .lineSpacing(4)
+
+            Divider()
+                .padding(.vertical, 16)
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text("开发者：张锦慧")
+                Text("协作者：吴思彤")
+                Text("版本：v1.0")
+                    .foregroundStyle(StudyPlanTheme.textSecondary)
+                Text("技术栈：SwiftUI + EventKit + UserNotifications")
+                    .foregroundStyle(StudyPlanTheme.textSecondary)
+            }
+            .font(.system(size: 14))
+            .foregroundStyle(StudyPlanTheme.textPrimary)
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(20)
+        .glassCard()
+    }
+
+    private var versionHistoryCard: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            Button {
+                withAnimation(.easeInOut(duration: 0.2)) {
+                    isHistoryExpanded.toggle()
+                }
+            } label: {
+                HStack(spacing: 16) {
+                    Image(systemName: "info.circle.fill")
+                        .foregroundStyle(StudyPlanTheme.textPrimary)
+                        .frame(width: 22)
+
+                    Text("版本历史")
+                        .font(.system(size: 15))
+                        .foregroundStyle(StudyPlanTheme.textPrimary)
+
+                    Spacer()
+
+                    Image(systemName: "chevron.right")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(StudyPlanTheme.textSecondary)
+                        .rotationEffect(.degrees(isHistoryExpanded ? 90 : 0))
+                }
+                .padding(.horizontal, 16)
+                .frame(height: 52)
+                .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+
+            if isHistoryExpanded {
+                Divider()
+                    .padding(.horizontal, 16)
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("alpha-1：首个功能与界面重构升级版本，包含任务拆解、专注计时、提醒、日历同步、统计和个人设置。")
+                    Text("alpha-2：统一任务卡片、计时与弹窗交互样式；新增统计页状态概览与专注建议，并优化学科词库管理。")
+                    Text("v1.0：正式发布版本，统一双端产品信息并修复已知问题。")
+                }
+                .font(.system(size: 14))
+                .foregroundStyle(StudyPlanTheme.textSecondary)
+                .lineSpacing(4)
+                .padding(.horizontal, 54)
+                .padding(.vertical, 16)
+            }
+        }
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .padding(.vertical, 6)
+        .glassCard()
     }
 }

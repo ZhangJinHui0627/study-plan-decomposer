@@ -2,7 +2,6 @@ import SwiftUI
 import UIKit
 
 struct AvatarFrameView: View {
-    let text: String
     let frameColorName: String
     var imageData: Data? = nil
     
@@ -47,11 +46,11 @@ struct AvatarFrameView: View {
                                 .scaledToFill()
                         } else {
                             Circle()
-                                .fill(StudyPlanTheme.primary.gradient)
+                                .fill(Color.white)
                                 .overlay(
-                                    Text(text)
-                                        .font(.system(size: size * 0.25, weight: .bold))
-                                        .foregroundStyle(.white)
+                                    Text("添加图片")
+                                        .font(.system(size: max(11, size * 0.14), weight: .medium))
+                                        .foregroundStyle(StudyPlanTheme.textSecondary)
                                 )
                         }
                     }

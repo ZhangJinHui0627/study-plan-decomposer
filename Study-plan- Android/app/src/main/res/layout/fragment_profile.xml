@@ -51,10 +51,9 @@
                     android:layout_width="80dp"
                     android:layout_height="80dp"
                     android:gravity="center"
-                    android:text="我"
-                    android:textColor="@color/white"
-                    android:textSize="24sp"
-                    android:textStyle="bold" />
+                    android:text="添加图片"
+                    android:textColor="#5F6368"
+                    android:textSize="12sp" />
             </FrameLayout>
 
         </FrameLayout>

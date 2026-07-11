@@ -11,7 +11,6 @@ struct SettingsView: View {
                 Section("账号") {
                     TextField("昵称", text: $store.nickname)
                     TextField("个性签名", text: $store.signature)
-                    TextField("头像文字", text: $store.avatarText)
                 }
                 
                 Section("本地规则库") {

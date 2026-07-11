@@ -12,7 +12,7 @@ struct ProfileView: View {
             VStack(spacing: 12) {
                 VStack(spacing: 8) {
                     PhotosPicker(selection: $selectedPhoto, matching: .images) {
-                        AvatarFrameView(text: store.avatarText, frameColorName: store.avatarFrameColor, imageData: store.avatarImageData)
+                        AvatarFrameView(frameColorName: store.avatarFrameColor, imageData: store.avatarImageData)
                             .frame(width: 96, height: 96)
                     }
                     .onChange(of: selectedPhoto) { _, item in
