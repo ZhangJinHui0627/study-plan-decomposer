@@ -279,8 +279,14 @@ final class StudyPlanStore: ObservableObject {
     }
 
     var filteredTasks: [Task] {
-        guard !searchText.isEmpty else { return tasks }
-        return tasks.filter { $0.content.localizedCaseInsensitiveContains(searchText) || $0.subject.localizedCaseInsensitiveContains(searchText) }
+        guard !searchText.isEmpty else { return [] }
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return tasks.filter {
+            $0.content.localizedCaseInsensitiveContains(searchText) ||
+            $0.subject.localizedCaseInsensitiveContains(searchText) ||
+            formatter.string(from: $0.date).contains(searchText)
+        }
     }
 
     private func save() {
