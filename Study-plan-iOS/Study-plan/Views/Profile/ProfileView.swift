@@ -26,7 +26,7 @@ struct ProfileView: View {
                 .glassCard()
 
                 VStack(spacing: 0) {
-                    ToggleRow(title: "允许手动打卡", icon: "checkmark.circle", isOn: $store.manualCompletionEnabled)
+                    ToggleRow(title: "允许手动打卡", icon: "bell", isOn: $store.manualCompletionEnabled)
                     Divider().padding(.leading, 54)
                     Button { showingAbout = true } label: { NavigationRow(title: "关于学习计划拆解", icon: "info.circle") }
                     Divider().padding(.leading, 54)
@@ -39,6 +39,9 @@ struct ProfileView: View {
         }
         .sheet(isPresented: $showingSettings) { SettingsView() }
         .sheet(isPresented: $showingAbout) { AboutView() }
+        .onChange(of: store.manualCompletionEnabled) { _, _ in
+            store.saveProfile()
+        }
         .onDisappear { store.saveProfile() }
     }
 }

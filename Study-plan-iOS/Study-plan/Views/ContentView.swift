@@ -49,7 +49,7 @@ struct ContentView: View {
                 }
                 .glassCard(cornerRadius: 24)
                 .padding(.horizontal, 16)
-                .padding(.bottom, 8)
+                .padding(.bottom, 16)
             }
         }
         .sheet(isPresented: $store.isShowingAddTask) { TaskEditorView(task: nil) }

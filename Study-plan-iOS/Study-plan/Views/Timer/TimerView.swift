@@ -6,7 +6,9 @@ struct TimerView: View {
     @State private var isShowingSelection = false
     @State private var isShowingOptions = false
     @State private var showPauseActionDialog = false
+    @State private var showChangeTaskDialog = false
     @State private var showFinishDialog = false
+    @State private var showZeroDurationAlert = false
     @State private var hasTriggeredOverflowToast = false
 
     private var elapsed: Int { store.timer.elapsedSeconds }
@@ -95,8 +97,7 @@ struct TimerView: View {
                 // 绑定任务与今日学习统计卡片
                 Button {
                     if store.timer.isRunning {
-                        // 运行时切换任务的防御确认
-                        isShowingSelection = true
+                        showChangeTaskDialog = true
                     } else {
                         isShowingSelection = true
                     }
@@ -107,7 +108,7 @@ struct TimerView: View {
                                 .font(.system(size: 14, weight: .bold))
                                 .foregroundStyle(.red)
                         } else {
-                            Text(activeTask.map { "当前任务: [\($0.subject)] \($0.content) (\($0.duration)分钟)" } ?? "不绑定任务 (自定义 25分钟)")
+                            Text(activeTask.map { "当前任务: [\($0.subject)] \($0.content) (\($0.duration)分钟)" } ?? "不绑定任务（自定义 25分钟）")
                                 .font(.system(size: 14))
                                 .foregroundStyle(StudyPlanTheme.textSecondary)
                                 .multilineTextAlignment(.center)
@@ -150,6 +151,21 @@ struct TimerView: View {
         } message: {
             Text("是否将当前计划「\(activeTask?.content ?? "")」标记为已完成？")
         }
+
+        .confirmationDialog(
+            "提示",
+            isPresented: $showChangeTaskDialog,
+            titleVisibility: .visible
+        ) {
+            Button("确定切换", role: .destructive) {
+                store.stopTimer()
+                store.selectTimerTask(nil)
+                isShowingSelection = true
+            }
+            Button("取消", role: .cancel) {}
+        } message: {
+            Text("当前正在计时，切换任务将终止并重置当前计时，确定要切换吗？")
+        }
         
         // 计时结束弹窗对齐 Android
         .alert(
@@ -184,6 +200,12 @@ struct TimerView: View {
         } message: {
             Text("计划已到时，正在记录溢出时间...")
         }
+
+        .alert("提示", isPresented: $showZeroDurationAlert) {
+            Button("确定", role: .cancel) {}
+        } message: {
+            Text("请先输入计划时长，例如“25分钟”")
+        }
         
         // 监听计时结束
         .onChange(of: isFinished) { _, finished in
@@ -215,9 +237,9 @@ struct TimerView: View {
         if !store.timer.isRunning {
             // 开始计时：若未绑定任务，直接开始自定义 25 分钟；若绑定了任务且时长为 0，弹出拦截
             if let task = activeTask, task.duration <= 0 {
-                // 拦截防御已在 TaskCardView 完成，但若在此处启动也要做安全防护
-                isShowingOptions = true
+                showZeroDurationAlert = true
             } else {
+                hasTriggeredOverflowToast = false
                 isShowingOptions = true
             }
         } else {

@@ -6,11 +6,17 @@ struct SearchTaskView: View {
 
     var body: some View {
         NavigationStack {
-            List(store.filteredTasks) { task in
-                TaskCardView(task: task)
-                    .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
-                    .listRowBackground(Color.clear)
-                    .listRowSeparator(.hidden)
+            List {
+                ForEach(store.filteredTasks) { task in
+                    TaskCardView(task: task)
+                        .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                        .listRowBackground(Color.clear)
+                        .listRowSeparator(.hidden)
+                }
+                .onDelete { offsets in
+                    let deleted = offsets.map { store.filteredTasks[$0] }
+                    deleted.forEach { store.delete($0) }
+                }
             }
             .listStyle(.plain)
             .scrollContentBackground(.hidden)

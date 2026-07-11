@@ -63,22 +63,10 @@ struct AvatarFrameView: View {
         }
     }
     
-    private func getColors(for name: String) -> [Color] {
-        switch name {
-        case "blue":
-            let color = StudyPlanTheme.primary
-            return [color.opacity(110.0/255.0), color, color.opacity(230.0/255.0), color.opacity(110.0/255.0)]
-        case "purple":
-            let color = Color.purple
-            return [color.opacity(110.0/255.0), color, color.opacity(230.0/255.0), color.opacity(110.0/255.0)]
-        case "green":
-            let color = Color.green
-            return [color.opacity(110.0/255.0), color, color.opacity(230.0/255.0), color.opacity(110.0/255.0)]
-        default:
-            return [
-                Color(hex: "#FF5F6D"), Color(hex: "#FFC371"), Color(hex: "#FFE66D"), Color(hex: "#7BE495"),
-                Color(hex: "#56CCF2"), Color(hex: "#8E7CFF"), Color(hex: "#FF6FD8"), Color(hex: "#FF5F6D")
-            ]
-        }
+    private func getColors(for _: String) -> [Color] {
+        [
+            Color(hex: "#FF5F6D"), Color(hex: "#FFC371"), Color(hex: "#FFE66D"), Color(hex: "#7BE495"),
+            Color(hex: "#56CCF2"), Color(hex: "#8E7CFF"), Color(hex: "#FF6FD8"), Color(hex: "#FF5F6D")
+        ]
     }
 }

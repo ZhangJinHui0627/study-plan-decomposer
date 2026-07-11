@@ -4,7 +4,6 @@ struct TaskCardView: View {
     @EnvironmentObject private var store: StudyPlanStore
     let task: Task
     @State private var expanded = false
-    @State private var showDeleteConfirm = false
     @State private var showZeroDurationAlert = false
 
     private var isTiming: Bool { store.timer.activeTaskID == task.id && store.timer.isRunning }
@@ -21,6 +20,7 @@ struct TaskCardView: View {
         }
         
         if calendar.isDateInToday(task.date) {
+            guard !task.specificTime.isEmpty else { return false }
             let currentStr = Self.timeFormatter.string(from: .now)
             if task.specificTime < currentStr && !isTiming {
                 return true
@@ -158,14 +158,7 @@ struct TaskCardView: View {
                 .opacity(expanded ? 0 : 1)
             }
         }
-        .swipeActions(edge: .trailing, allowsFullSwipe: false) {
-            Button(role: .destructive) {
-                showDeleteConfirm = true
-            } label: {
-                Label("删除", systemImage: "trash")
-            }
-        }
-        .swipeActions(edge: .leading, allowsFullSwipe: true) {
+        .swipeActions(edge: .leading, allowsFullSwipe: false) {
             if store.manualCompletionEnabled {
                 Button {
                     toggleTaskStatus()
@@ -185,11 +178,7 @@ struct TaskCardView: View {
         }
         .contextMenu {
             Button("编辑") { store.editingTask = task }
-            Button("删除", role: .destructive) { showDeleteConfirm = true }
-        }
-        .confirmationDialog("确定要删除该任务吗？", isPresented: $showDeleteConfirm, titleVisibility: .visible) {
             Button("删除", role: .destructive) { store.delete(task) }
-            Button("取消", role: .cancel) {}
         }
         .alert("提示", isPresented: $showZeroDurationAlert) {
             Button("确定", role: .cancel) {}

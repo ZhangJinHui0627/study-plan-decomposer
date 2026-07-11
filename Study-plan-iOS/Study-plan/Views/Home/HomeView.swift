@@ -12,15 +12,21 @@ struct HomeView: View {
                     .lineSpacing(8)
                     .font(.system(size: 15))
                     .foregroundStyle(StudyPlanTheme.textSecondary)
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(.top, 150)
+                    .frame(maxHeight: .infinity, alignment: .top)
             } else {
                 List {
                     ForEach(store.tasks) { task in
                         TaskCardView(task: task)
-                            .listRowInsets(EdgeInsets(top: 6, leading: 16, bottom: 6, trailing: 16))
+                            .listRowInsets(EdgeInsets(top: 8, leading: 16, bottom: 4, trailing: 16))
                             .listRowBackground(Color.clear)
                             .listRowSeparator(.hidden)
                             .contentShape(Rectangle())
+                    }
+                    .onDelete { offsets in
+                        let deleted = offsets.map { store.tasks[$0] }
+                        deleted.forEach { store.delete($0) }
                     }
                     // 在多选状态下置空 onMove，拦截禁用拖拽，对齐 Android
                     .onMove(perform: store.isBatchDeleting ? nil : { store.move(from: $0, to: $1) })

@@ -63,7 +63,7 @@ struct TimerOptionsView: View {
                     allowOverflow = false
                 }
             }
-            .navigationTitle("计时选项")
+            .navigationTitle("选择计时方式")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .cancellationAction) {
@@ -73,7 +73,7 @@ struct TimerOptionsView: View {
                 }
                 ToolbarItem(placement: .confirmationAction) {
                     Button("开始") {
-                        let finalMins = Int(minutes) ?? 25
+                        let finalMins = max(1, Int(minutes) ?? store.defaultTimerMinutes)
                         // 倒计时下强制不允许溢出
                         let finalOverflow = isCountdown ? false : allowOverflow
                         

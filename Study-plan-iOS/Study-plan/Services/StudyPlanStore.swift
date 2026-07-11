@@ -10,7 +10,7 @@ final class StudyPlanStore: ObservableObject {
     @Published var signature = "更高效的学习方式"
     @Published var avatarText = "我"
     @Published var avatarImageData: Data?
-    @Published var avatarFrameColor = "blue"
+    @Published var avatarFrameColor = "default"
     @Published var remindersEnabled = true
     @Published var vibrateEnabled = true
     @Published var defaultTimerMinutes = 25
@@ -53,12 +53,8 @@ final class StudyPlanStore: ObservableObject {
                     self.lastElapsedSeconds = state.elapsedSeconds
                     self.saveTodayStudySeconds()
                 }
-            } else {
+            } else if !state.isRunning {
                 self.lastElapsedSeconds = 0
-            }
-            
-            if state.isRunning {
-                self.isManualOrder = false
             }
             
             self.sortTasks()
@@ -67,9 +63,13 @@ final class StudyPlanStore: ObservableObject {
             if let data = try? JSONEncoder().encode(state) {
                 UserDefaults.standard.set(data, forKey: self.timerKey)
             }
+            if !state.isRunning {
+                self.notificationScheduler.cancelTimerEnd()
+            }
         }
         notificationScheduler.requestPermission()
         calendarService.requestAccess()
+        timerEngine.refresh()
     }
 
     func sortTasks() {
@@ -131,19 +131,18 @@ final class StudyPlanStore: ObservableObject {
         lastElapsedSeconds = 0
         timerEngine.select(task)
         timer = timerEngine.state
-        isManualOrder = false
         sortTasks()
         save()
     }
 
     func startTimer(minutes: Int, isCountdown: Bool, allowOverflow: Bool) {
         lastElapsedSeconds = 0
+        notificationScheduler.cancelTimerEnd()
         timerEngine.start(minutes: minutes, isCountdown: isCountdown, allowOverflow: allowOverflow)
         timer = timerEngine.state
-        isManualOrder = false
         sortTasks()
         save()
-        if isCountdown { notificationScheduler.scheduleTimerEnd(after: max(1, minutes) * 60) }
+        syncTimerNotification()
     }
 
     func startTimerForTask(_ task: Task, isCountdown: Bool = true, allowOverflow: Bool = false) {
@@ -152,19 +151,17 @@ final class StudyPlanStore: ObservableObject {
     }
 
     func toggleTimer() {
-        lastElapsedSeconds = 0
         timerEngine.toggle()
         timer = timerEngine.state
-        isManualOrder = false
         sortTasks()
         save()
+        syncTimerNotification()
     }
 
     func stopTimer() {
         lastElapsedSeconds = 0
         timerEngine.stop()
         timer = timerEngine.state
-        isManualOrder = false
         sortTasks()
         save()
         notificationScheduler.cancelTimerEnd()
@@ -173,11 +170,26 @@ final class StudyPlanStore: ObservableObject {
     func refreshTimer() {
         timerEngine.refresh()
         timer = timerEngine.state
+        syncTimerNotification()
+    }
+
+    private func syncTimerNotification() {
+        notificationScheduler.cancelTimerEnd()
+        if timer.isRunning && !timer.isPaused && timer.isCountdown {
+            notificationScheduler.scheduleTimerEnd(after: max(1, timer.totalSeconds - timer.elapsedSeconds))
+        }
     }
 
     func setRemindersEnabled(_ enabled: Bool) {
         remindersEnabled = enabled
         tasks.forEach { notificationScheduler.cancel(taskID: $0.id); if enabled { notificationScheduler.schedule(task: $0) } }
+        save()
+    }
+
+    func setReminderTime(_ date: Date) {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm"
+        reminderTime = formatter.string(from: date)
         save()
     }
 
@@ -203,9 +215,8 @@ final class StudyPlanStore: ObservableObject {
 
     func add(_ task: Task) {
         var value = task
-        value.calendarEventID = calendarService.addOrUpdate(value)
+        if let eventID = calendarService.addOrUpdate(value) { value.calendarEventID = eventID }
         tasks.append(value)
-        isManualOrder = false
         sortTasks()
         if remindersEnabled { notificationScheduler.schedule(task: value) }
         save()
@@ -214,17 +225,20 @@ final class StudyPlanStore: ObservableObject {
     func update(_ task: Task) {
         guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
         var value = task
-        value.calendarEventID = calendarService.addOrUpdate(value)
+        if let eventID = calendarService.addOrUpdate(value) { value.calendarEventID = eventID }
         tasks[index] = value
         notificationScheduler.cancel(taskID: value.id)
         if remindersEnabled { notificationScheduler.schedule(task: value) }
-        isManualOrder = false
         sortTasks()
         save()
     }
 
     func delete(_ task: Task) {
-        tasks.removeAll { $0.id == task.id }
+        if timer.activeTaskID == task.id {
+            stopTimer()
+            selectTimerTask(nil)
+        }
+        tasks = tasks.filter { $0.id != task.id }
         selectedTaskIDs.remove(task.id)
         notificationScheduler.cancel(taskID: task.id)
         calendarService.delete(task)
@@ -237,7 +251,11 @@ final class StudyPlanStore: ObservableObject {
 
     func deleteSelected() {
         let deleted = tasks.filter { selectedTaskIDs.contains($0.id) }
-        tasks.removeAll { selectedTaskIDs.contains($0.id) }
+        if let activeTaskID = timer.activeTaskID, selectedTaskIDs.contains(activeTaskID) {
+            stopTimer()
+            selectTimerTask(nil)
+        }
+        tasks = tasks.filter { !selectedTaskIDs.contains($0.id) }
         deleted.forEach { notificationScheduler.cancel(taskID: $0.id); calendarService.delete($0) }
         if isManualOrder {
             let idsToDelete = Set(deleted.map { $0.id.uuidString })
@@ -245,16 +263,20 @@ final class StudyPlanStore: ObservableObject {
         }
         selectedTaskIDs.removeAll()
         isBatchDeleting = false
+        isManualOrder = false
+        tasksOrder.removeAll()
         sortTasks()
         save()
     }
 
     func clearAllTasks() {
+        stopTimer()
+        selectTimerTask(nil)
         tasks.forEach {
             notificationScheduler.cancel(taskID: $0.id)
             calendarService.delete($0)
         }
-        tasks.removeAll()
+        tasks = []
         save()
     }
 
@@ -265,8 +287,12 @@ final class StudyPlanStore: ObservableObject {
 
     func toggle(_ task: Task) {
         guard let index = tasks.firstIndex(where: { $0.id == task.id }) else { return }
-        tasks[index].status = tasks[index].status == 1 ? 0 : 1
-        isManualOrder = false
+        var value = tasks[index]
+        value.status = value.status == 1 ? 0 : 1
+        if let eventID = calendarService.addOrUpdate(value) { value.calendarEventID = eventID }
+        tasks[index] = value
+        notificationScheduler.cancel(taskID: value.id)
+        if remindersEnabled && value.status == 0 { notificationScheduler.schedule(task: value) }
         sortTasks()
         save()
     }
@@ -305,7 +331,7 @@ final class StudyPlanStore: ObservableObject {
             if let value = profile.dropFirst().first as? String { signature = value }
             if let value = profile.dropFirst(2).first as? String { avatarText = value }
             if let value = profile.dropFirst(3).first as? Data, !value.isEmpty { avatarImageData = value }
-            if let value = profile.dropFirst(4).first as? String { avatarFrameColor = value }
+            avatarFrameColor = "default"
             if let value = profile.dropFirst(5).first as? Bool { remindersEnabled = value }
             if let value = profile.dropFirst(6).first as? Bool { vibrateEnabled = value }
             if let value = profile.dropFirst(7).first as? Int { defaultTimerMinutes = value }

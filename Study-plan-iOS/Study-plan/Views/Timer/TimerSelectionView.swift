@@ -7,14 +7,29 @@ struct TimerSelectionView: View {
     var body: some View {
         NavigationStack {
             List {
-                Button("不绑定任务（自定义）") { store.selectTimerTask(nil); dismiss() }
+                Button {
+                    store.selectTimerTask(nil)
+                    dismiss()
+                } label: {
+                    Text("不绑定任务（自定义 25 分钟）")
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                }
+                .buttonStyle(.plain)
+                .padding(14)
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
+
                 ForEach(store.tasks.filter { $0.status == 0 && $0.duration > 0 }) { task in
-                    Button { store.selectTimerTask(task); dismiss() } label: {
-                        VStack(alignment: .leading, spacing: 4) {
-                            Text(task.content).foregroundStyle(StudyPlanTheme.textPrimary)
-                            Text(task.subject).font(.caption).foregroundStyle(StudyPlanTheme.textSecondary)
-                        }
+                    Button {
+                        store.selectTimerTask(task)
+                        dismiss()
+                    } label: {
+                        Text("[\(task.subject)] \(task.content)（\(task.duration) 分钟）")
+                            .foregroundStyle(StudyPlanTheme.textPrimary)
+                            .frame(maxWidth: .infinity, alignment: .leading)
                     }
+                    .buttonStyle(.plain)
+                    .padding(14)
+                    .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 12))
                 }
             }
             .scrollContentBackground(.hidden)

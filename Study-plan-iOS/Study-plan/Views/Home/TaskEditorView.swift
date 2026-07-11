@@ -19,9 +19,9 @@ struct TaskEditorView: View {
         _content = State(initialValue: task?.content ?? "")
         _duration = State(initialValue: task.map { $0.duration == 0 ? "" : String($0.duration) } ?? "")
         _pages = State(initialValue: task.map { $0.pages == 0 ? "" : String($0.pages) } ?? "")
-        _priority = State(initialValue: task?.priority ?? 1)
+        _priority = State(initialValue: task?.priority ?? 0)
         _date = State(initialValue: task?.date ?? .now)
-        _specificTime = State(initialValue: task?.specificTime ?? "")
+        _specificTime = State(initialValue: task?.specificTime ?? "08:00")
     }
 
     var body: some View {

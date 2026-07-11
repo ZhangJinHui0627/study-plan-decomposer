@@ -6,8 +6,17 @@ final class TimerEngine {
     private var timer: Timer?
 
     func select(_ task: Task?) {
+        timer?.invalidate()
+        timer = nil
+        state.isRunning = false
+        state.isPaused = false
+        state.isCountdown = true
+        state.allowOverflow = false
+        state.elapsedSeconds = 0
+        state.startedAt = nil
+        state.pausedAt = nil
         state.activeTaskID = task?.id
-        if let task, task.duration > 0 { state.totalSeconds = task.duration * 60 }
+        state.totalSeconds = task.map { max(1, $0.duration) * 60 } ?? 1500
         publish()
     }
 
@@ -21,7 +30,7 @@ final class TimerEngine {
         state.elapsedSeconds = 0
         state.startedAt = .now
         state.pausedAt = nil
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in self?.tick() }
+        scheduleTimer()
         publish()
     }
 
@@ -31,7 +40,7 @@ final class TimerEngine {
             state.isPaused = false
             state.startedAt = .now.addingTimeInterval(-TimeInterval(state.elapsedSeconds))
             state.pausedAt = nil
-            timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in self?.tick() }
+            scheduleTimer()
         } else {
             state.isPaused = true
             state.pausedAt = .now
@@ -51,12 +60,21 @@ final class TimerEngine {
         publish()
     }
 
-    func refresh() { if state.isRunning && !state.isPaused { tick() } }
+    func refresh() {
+        guard state.isRunning, !state.isPaused else { return }
+        scheduleTimer()
+        tick()
+    }
+
+    private func scheduleTimer() {
+        timer?.invalidate()
+        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in self?.tick() }
+    }
 
     private func tick() {
         guard state.isRunning, !state.isPaused, let startedAt = state.startedAt else { return }
         state.elapsedSeconds = max(0, Int(Date.now.timeIntervalSince(startedAt)))
-        if state.isCountdown && state.elapsedSeconds >= state.totalSeconds && !state.allowOverflow {
+        if state.elapsedSeconds >= state.totalSeconds && (state.isCountdown || !state.allowOverflow) {
             state.elapsedSeconds = state.totalSeconds
             state.isRunning = false
             timer?.invalidate()

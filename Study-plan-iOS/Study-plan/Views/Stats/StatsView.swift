@@ -34,8 +34,18 @@ struct StatsView: View {
                     Text("学习进度")
                         .font(.system(size: 15, weight: .bold))
                         .foregroundStyle(StudyPlanTheme.textPrimary)
-                    ProgressView(value: Double(store.completedTasks), total: Double(max(1, store.tasks.count)))
-                        .tint(StudyPlanTheme.statGreen)
+                    GeometryReader { geometry in
+                        let total = CGFloat(max(1, store.tasks.count))
+                        let doneWidth = geometry.size.width * CGFloat(store.completedTasks) / total
+                        ZStack(alignment: .leading) {
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(StudyPlanTheme.primary.opacity(0.10))
+                            RoundedRectangle(cornerRadius: 6)
+                                .fill(StudyPlanTheme.statGreen)
+                                .frame(width: doneWidth)
+                        }
+                    }
+                    .frame(height: 12)
                     Text(store.tasks.isEmpty ? "还没有任务，快去添加吧" : "已完成 \(store.completedTasks) / \(store.tasks.count) 项任务")
                         .font(.system(size: 13))
                         .foregroundStyle(StudyPlanTheme.textSecondary)
