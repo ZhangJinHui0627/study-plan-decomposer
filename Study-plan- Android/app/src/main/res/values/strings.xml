@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">学习计划拆解</string>
+    <string name="tab_home">首页</string>
+    <string name="tab_stats">统计</string>
+    <string name="tab_profile">我的</string>
+    <string name="hint_input">在此粘贴或输入学习计划…\n\n示例：明天晚上 背英语单词 30分钟 第3章</string>
+    <string name="btn_parse">解析并添加</string>
+    <string name="empty_tasks">还没有学习任务\n快去输入计划吧</string>
+    <string name="profile_desc">学习计划智能拆解与提醒 App\n\n帮助大学生将自然语言学习计划拆解为结构化任务，支持提醒与进度管理。\n\n开发者：张锦慧\n技术栈：Android 原生 Java + SQLite</string>
+    <string name="version_name">alpha-2</string>
+    <string name="dev_signature">开发者：张锦慧</string>
+    <string name="clear_confirm">确定要清空全部任务吗？此操作不可恢复。</string>
+    <string name="menu_about">关于应用</string>
+    <string name="menu_settings">设置</string>
+    <string name="menu_share">分享给同学</string>
+    <string name="task_click_to_complete">点击完成</string>
+    <string name="reminder_time_dialog_title">设置提醒时间</string>
+    <string name="reminder_time_dialog_message">选择每天接收学习提醒的时间</string>
+    <string name="action_cancel">取消</string>
+    <string name="action_save">保存</string>
+    <string name="timer_today_total">今日累计学习：%1$d 分钟</string>
+</resources>

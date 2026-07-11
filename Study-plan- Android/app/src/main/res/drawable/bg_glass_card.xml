@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <!-- 70% 透明白，确保在浅色渐变背景上文字依然清晰可读 -->
+    <solid android:color="#B3FFFFFF" />
+    <corners android:radius="18dp" />
+    <!-- 90% 透明度高亮白边框作为玻璃反射高光 -->
+    <stroke
+        android:width="1.5dp"
+        android:color="#E6FFFFFF" />
+</shape>

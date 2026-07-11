@@ -1,0 +1,21 @@
+<!-- 大屏手机 (480dp-599dp) -->
+<resources>
+    <dimen name="page_padding">16dp</dimen>
+    <dimen name="card_corner">12dp</dimen>
+    <dimen name="card_padding">16dp</dimen>
+    <dimen name="card_gap">12dp</dimen>
+    <dimen name="avatar_size">80dp</dimen>
+    <dimen name="icon_small">24dp</dimen>
+    <dimen name="icon_medium">28dp</dimen>
+    <dimen name="text_title">18sp</dimen>
+    <dimen name="text_subtitle">14sp</dimen>
+    <dimen name="text_body">15sp</dimen>
+    <dimen name="text_big">20sp</dimen>
+    <dimen name="text_stat">34sp</dimen>
+    <dimen name="btn_height">48dp</dimen>
+    <dimen name="list_item_height">60dp</dimen>
+    <dimen name="profile_top_pad">40dp</dimen>
+    <dimen name="profile_bottom_pad">28dp</dimen>
+    <dimen name="stat_section_pad">20dp</dimen>
+    <dimen name="progress_height">10dp</dimen>
+</resources>

@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/settings_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/bg_app_gradient">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@android:color/transparent"
+        app:titleTextColor="#1F1F1F"
+        app:title="设置"
+        app:titleTextAppearance="@style/ToolbarTitle"
+        app:navigationIcon="@drawable/ic_arrow_back"
+        app:navigationIconTint="#1F1F1F" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="8dp"
+            android:paddingBottom="32dp">
+
+            <!-- ===== 账号 ===== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="账号"
+                android:textSize="@dimen/text_subtitle"
+                android:textColor="@color/section_title"
+                android:paddingStart="16dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_glass_card">
+
+                <LinearLayout
+                    android:id="@+id/item_person"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true" android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_person"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="个人资料" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <ImageView
+                        android:layout_width="@dimen/icon_small" android:layout_height="@dimen/icon_small"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="#5F6368" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== 本地规则库 ===== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="本地规则库"
+                android:textSize="@dimen/text_subtitle"
+                android:textColor="@color/section_title"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_glass_card">
+
+                <LinearLayout
+                    android:id="@+id/item_subject_rules"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true" android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@android:drawable/ic_menu_agenda"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="学科词库管理" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <ImageView
+                        android:layout_width="@dimen/icon_small" android:layout_height="@dimen/icon_small"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="#5F6368" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== 通知 ===== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="通知"
+                android:textSize="@dimen/text_subtitle"
+                android:textColor="@color/section_title"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_glass_card">
+
+                <LinearLayout
+                    android:id="@+id/item_reminder"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_notification"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="学习提醒" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/sw_reminder"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/item_reminder_time"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true" android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_time"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="提醒时间" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <TextView
+                        android:id="@+id/tv_reminder_time"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="08:00" android:textSize="@dimen/text_body" android:textColor="@color/text_secondary"
+                        android:layout_marginEnd="4dp" />
+                    <ImageView
+                        android:layout_width="@dimen/icon_small" android:layout_height="@dimen/icon_small"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="#5F6368" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/item_vibrate"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true"
+                    android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_vibrate"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="震动提醒" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <androidx.appcompat.widget.SwitchCompat
+                        android:id="@+id/sw_vibrate"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <!-- ===== 学习计划记录管理 ===== -->
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="学习计划记录管理"
+                android:textSize="@dimen/text_subtitle"
+                android:textColor="@color/section_title"
+                android:paddingStart="16dp"
+                android:paddingTop="16dp"
+                android:paddingBottom="6dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginHorizontal="16dp"
+                android:background="@drawable/bg_glass_card">
+
+                <LinearLayout
+                    android:id="@+id/item_clear_all"
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:clickable="true" android:focusable="true">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_delete_all"
+                        app:tint="#E53935" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="清空全部任务" android:textSize="@dimen/text_body" android:textColor="#E53935" />
+                    <ImageView
+                        android:layout_width="@dimen/icon_small" android:layout_height="@dimen/icon_small"
+                        android:src="@drawable/ic_arrow_right"
+                        app:tint="#5F6368" />
+                </LinearLayout>
+
+                <LinearLayout
+                    style="@style/SettingItem"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <ImageView
+                        android:layout_width="@dimen/icon_medium" android:layout_height="@dimen/icon_medium"
+                        android:src="@drawable/ic_storage"
+                        app:tint="#1F1F1F" />
+                    <TextView
+                        android:layout_width="0dp" android:layout_height="wrap_content"
+                        android:layout_weight="1" android:layout_marginStart="16dp"
+                        android:text="数据库大小" android:textSize="@dimen/text_body" android:textColor="@color/text_primary" />
+                    <TextView
+                        android:id="@+id/tv_db_size"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content"
+                        android:text="计算中..." android:textSize="@dimen/text_body" android:textColor="@color/text_secondary" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

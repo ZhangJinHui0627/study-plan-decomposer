@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_card">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="选择计时方式"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="#1F1F1F"
+        android:layout_marginBottom="16dp" />
+
+    <TextView
+        android:id="@+id/btn_mode_countdown"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="倒计时模式"
+        android:textColor="#5F6368"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/btn_mode_countup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="正计时模式"
+        android:textColor="#5F6368"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:layout_marginBottom="12dp" />
+
+    <TextView
+        android:id="@+id/btn_mode_overflow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="达到计划时长后继续计时并显示溢出时间"
+        android:textColor="#5F6368"
+        android:textSize="13sp"
+        android:gravity="center"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"
+        android:layout_marginBottom="24dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end">
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_cancel"
+            style="Widget.MaterialComponents.Button.TextButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="取消"
+            android:textColor="#1F1F1F"
+            android:background="@drawable/bg_capsule_unselected"
+            android:minWidth="96dp"
+            android:minHeight="48dp" />
+
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btn_dialog_start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="开始专注"
+            android:textColor="#1F1F1F"
+            android:layout_marginStart="8dp"
+            android:background="@drawable/bg_capsule_selected"
+            android:minWidth="112dp"
+            android:minHeight="48dp" />
+    </LinearLayout>
+</LinearLayout>

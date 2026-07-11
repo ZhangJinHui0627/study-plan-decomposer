@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 选中时使用活力蓝色 -->
+    <item android:state_checked="true" android:color="#1A73E8" />
+    <!-- 默认（未选中）使用中灰色 -->
+    <item android:color="#666666" />
+</selector>

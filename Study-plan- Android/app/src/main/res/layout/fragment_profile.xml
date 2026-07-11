@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@android:color/transparent">
+
+    <!-- 头像区玻璃卡片 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:gravity="center_horizontal"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="12dp"
+        android:padding="20dp"
+        android:background="@drawable/bg_glass_card">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="96dp"
+            android:clipChildren="false"
+            android:foregroundGravity="center">
+
+            <FrameLayout
+                android:id="@+id/fl_avatar"
+                android:layout_width="96dp"
+                android:layout_height="96dp"
+                android:layout_gravity="center"
+                android:clipChildren="false"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?attr/selectableItemBackgroundBorderless">
+
+                <com.example.studyplan.AvatarFrameView
+                    android:id="@+id/v_avatar_bg"
+                    android:layout_width="88dp"
+                    android:layout_height="88dp"
+                    android:layout_gravity="center" />
+                <ImageView
+                    android:id="@+id/iv_avatar"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_gravity="center"
+                    android:scaleType="centerCrop"
+                    android:visibility="gone" />
+                <TextView
+                    android:id="@+id/tv_avatar_text"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:gravity="center"
+                    android:text="我"
+                    android:textColor="@color/white"
+                    android:textSize="24sp"
+                    android:textStyle="bold" />
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/tv_nickname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="我的学习"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="#1F1F1F"
+            android:layout_marginTop="12dp" />
+
+        <TextView
+            android:id="@+id/tv_signature"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="更高效的学习方式"
+            android:textSize="13sp"
+            android:textColor="#5F6368"
+            android:layout_marginTop="4dp" />
+    </LinearLayout>
+
+    <!-- 菜单列表玻璃卡片 -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginHorizontal="16dp"
+        android:background="@drawable/bg_glass_card"
+        android:padding="6dp">
+
+        <!-- 允许手动打卡开关 -->
+        <LinearLayout
+            android:id="@+id/item_manual_complete"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_reminder"
+                app:tint="#1F1F1F" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="16dp"
+                android:text="允许手动打卡"
+                android:textSize="15sp"
+                android:textColor="#1F1F1F" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/sw_manual_complete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:thumbTint="@color/primary" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_about"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="22dp" android:layout_height="22dp"
+                android:src="@drawable/ic_about"
+                app:tint="#1F1F1F" />
+
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:layout_marginStart="16dp"
+                android:text="关于学习计划拆解" android:textSize="15sp"
+                android:textColor="#1F1F1F" />
+
+            <ImageView
+                android:layout_width="16dp" android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="#5F6368" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/item_settings"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:background="?attr/selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true">
+
+            <ImageView
+                android:layout_width="22dp" android:layout_height="22dp"
+                android:src="@drawable/ic_setting"
+                app:tint="#1F1F1F" />
+
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1" android:layout_marginStart="16dp"
+                android:text="设置" android:textSize="15sp"
+                android:textColor="#1F1F1F" />
+
+            <ImageView
+                android:layout_width="16dp" android:layout_height="16dp"
+                android:src="@drawable/ic_arrow_right"
+                app:tint="#5F6368" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@android:color/transparent" />
+</LinearLayout>

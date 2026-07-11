@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="24dp"
+    android:background="@drawable/bg_dialog_card">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="添加学习计划"
+        android:textSize="@dimen/text_big"
+        android:textStyle="bold"
+        android:textColor="@color/text_primary"
+        android:layout_marginBottom="12dp" />
+
+    <EditText
+        android:id="@+id/et_add_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="输入学习计划…如：明天上午 背英语单词 30分钟"
+        android:minLines="3"
+        android:maxLines="5"
+        android:inputType="textMultiLine"
+        android:gravity="top"
+        android:scrollbars="vertical"
+        android:scrollbarStyle="insideInset"
+        android:background="@drawable/bg_dialog_input"
+        android:padding="12dp"
+        android:textSize="@dimen/text_body" />
+
+    <Button
+        android:id="@+id/btn_add_parse"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height"
+        android:layout_marginTop="12dp"
+        android:text="解析并添加"
+        android:textColor="#1F1F1F"
+        android:textSize="@dimen/text_body"
+        android:background="@drawable/bg_capsule_selected"
+        android:minHeight="48dp" />
+</LinearLayout>

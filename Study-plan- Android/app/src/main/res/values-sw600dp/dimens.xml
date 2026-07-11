@@ -1,0 +1,21 @@
+<!-- 平板 (600dp+) -->
+<resources>
+    <dimen name="page_padding">24dp</dimen>
+    <dimen name="card_corner">16dp</dimen>
+    <dimen name="card_padding">24dp</dimen>
+    <dimen name="card_gap">16dp</dimen>
+    <dimen name="avatar_size">96dp</dimen>
+    <dimen name="icon_small">28dp</dimen>
+    <dimen name="icon_medium">32dp</dimen>
+    <dimen name="text_title">22sp</dimen>
+    <dimen name="text_subtitle">16sp</dimen>
+    <dimen name="text_body">17sp</dimen>
+    <dimen name="text_big">24sp</dimen>
+    <dimen name="text_stat">40sp</dimen>
+    <dimen name="btn_height">56dp</dimen>
+    <dimen name="list_item_height">64dp</dimen>
+    <dimen name="profile_top_pad">48dp</dimen>
+    <dimen name="profile_bottom_pad">36dp</dimen>
+    <dimen name="stat_section_pad">24dp</dimen>
+    <dimen name="progress_height">12dp</dimen>
+</resources>

@@ -1,0 +1,16 @@
+# Android
+.gradle/
+.idea/
+build/
+local.properties
+*.iml
+
+# iOS (Xcode)
+.derivedData/
+DerivedData/
+build/
+*.xcodeproj/xcuserdata/
+*.xcworkspace/xcuserdata/
+
+# macOS
+.DS_Store
