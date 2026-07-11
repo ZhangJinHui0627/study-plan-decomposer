@@ -105,6 +105,7 @@ struct TaskCardView: View {
                         Button(task.status == 1 ? "重做任务" : "标记完成") {
                             toggleTaskStatus()
                         }
+                        .buttonStyle(.plain)
                         .font(.system(size: 11, weight: .bold))
                         .foregroundStyle(StudyPlanTheme.primary)
                         .padding(.horizontal, 12)
@@ -115,6 +116,7 @@ struct TaskCardView: View {
                             Button("重做任务") {
                                 toggleTaskStatus()
                             }
+                            .buttonStyle(.plain)
                             .font(.system(size: 11, weight: .bold))
                             .foregroundStyle(StudyPlanTheme.primary)
                             .padding(.horizontal, 12)
@@ -124,6 +126,7 @@ struct TaskCardView: View {
                             Button("开始专注") {
                                 startFocusing()
                             }
+                            .buttonStyle(.plain)
                             .font(.system(size: 11, weight: .bold))
                             .foregroundStyle(StudyPlanTheme.primary)
                             .padding(.horizontal, 12)
@@ -146,6 +149,7 @@ struct TaskCardView: View {
                 Button("点击完成") {
                     toggleTaskStatus()
                 }
+                .buttonStyle(.plain)
                 .font(.system(size: 11, weight: .bold))
                 .foregroundStyle(StudyPlanTheme.primary)
                 .padding(.horizontal, 10)

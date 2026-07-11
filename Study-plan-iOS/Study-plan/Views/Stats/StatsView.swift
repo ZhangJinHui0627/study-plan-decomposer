@@ -25,20 +25,24 @@ struct StatsView: View {
 
                 InsightCard(title: "今日专注建议", text: store.tasks.isEmpty ? "添加一个小目标，开始今天的专注" : store.completedTasks == store.tasks.count ? "今日计划已清零，可以安心休息了" : store.completedTasks == 0 ? "先完成最简单的一项，建立启动惯性" : "已完成 \(store.completionRate)%，再坚持一小步就更接近目标")
 
-                VStack(alignment: .leading, spacing: 10) {
-                    Text("任务状态概览").font(.system(size: 15, weight: .bold)).foregroundStyle(StudyPlanTheme.textPrimary)
+                InsightCard(
+                    title: "任务状态概览",
+                    text: store.tasks.isEmpty ? "暂无任务数据" : "全部 \(store.tasks.count) 项 · 已完成 \(store.completedTasks) 项 · 待完成 \(store.tasks.count - store.completedTasks) 项"
+                )
+
+                VStack(alignment: .leading, spacing: 12) {
+                    Text("学习进度")
+                        .font(.system(size: 15, weight: .bold))
+                        .foregroundStyle(StudyPlanTheme.textPrimary)
                     ProgressView(value: Double(store.completedTasks), total: Double(max(1, store.tasks.count)))
                         .tint(StudyPlanTheme.statGreen)
                     Text(store.tasks.isEmpty ? "还没有任务，快去添加吧" : "已完成 \(store.completedTasks) / \(store.tasks.count) 项任务")
-                        .font(.system(size: 13)).foregroundStyle(StudyPlanTheme.textSecondary)
+                        .font(.system(size: 13))
+                        .foregroundStyle(StudyPlanTheme.textSecondary)
                 }
                 .padding(16)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .glassCard()
-
-                Text(store.tasks.isEmpty ? "暂无任务数据" : "全部 \(store.tasks.count) 项 · 已完成 \(store.completedTasks) 项 · 待完成 \(store.tasks.count - store.completedTasks) 项")
-                    .font(.system(size: 13))
-                    .foregroundStyle(StudyPlanTheme.textSecondary)
             }
             .padding(16)
         }

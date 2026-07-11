@@ -86,11 +86,11 @@ private struct ScreenGlowOverlay: View {
                     .stroke(
                         AngularGradient(
                             colors: [Color(hex: "#1A73E8"), Color(hex: "#00D2FF"), Color(hex: "#1A73E8")],
-                            center: .center
+                            center: .center,
+                            angle: .degrees(angleDeg)
                         ),
                         lineWidth: 3
                     )
-                    .rotationEffect(.degrees(angleDeg))
                     .shadow(color: Color(hex: "#1A73E8").opacity(alpha * 0.7), radius: blurRadius)
                     .opacity(alpha)
                     .padding(3)
