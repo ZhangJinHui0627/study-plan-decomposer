@@ -5,6 +5,7 @@ struct TaskCardView: View {
     let task: Task
     @State private var expanded = false
     @State private var showZeroDurationAlert = false
+    @State private var showFocusOptions = false
 
     private var isTiming: Bool { store.timer.activeTaskID == task.id && store.timer.isRunning }
     
@@ -101,8 +102,8 @@ struct TaskCardView: View {
                     Spacer()
                     
                     // 操作按钮：根据打卡首选项联动
-                    if store.manualCompletionEnabled {
-                        Button(task.status == 1 ? "重做任务" : "标记完成") {
+                    if task.status == 1 {
+                        Button("重做任务") {
                             toggleTaskStatus()
                         }
                         .buttonStyle(.plain)
@@ -111,18 +112,8 @@ struct TaskCardView: View {
                         .padding(.horizontal, 12)
                         .padding(.vertical, 5)
                         .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
-                    } else {
-                        if task.status == 1 {
-                            Button("重做任务") {
-                                toggleTaskStatus()
-                            }
-                            .buttonStyle(.plain)
-                            .font(.system(size: 11, weight: .bold))
-                            .foregroundStyle(StudyPlanTheme.primary)
-                            .padding(.horizontal, 12)
-                            .padding(.vertical, 5)
-                            .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
-                        } else {
+                    } else if store.manualCompletionEnabled {
+                        HStack(spacing: 8) {
                             Button("开始专注") {
                                 startFocusing()
                             }
@@ -132,7 +123,27 @@ struct TaskCardView: View {
                             .padding(.horizontal, 12)
                             .padding(.vertical, 5)
                             .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
+
+                            Button("标记完成") {
+                                toggleTaskStatus()
+                            }
+                            .buttonStyle(.plain)
+                            .font(.system(size: 11, weight: .bold))
+                            .foregroundStyle(StudyPlanTheme.primary)
+                            .padding(.horizontal, 12)
+                            .padding(.vertical, 5)
+                            .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
                         }
+                    } else {
+                        Button("开始专注") {
+                            startFocusing()
+                        }
+                        .buttonStyle(.plain)
+                        .font(.system(size: 11, weight: .bold))
+                        .foregroundStyle(StudyPlanTheme.primary)
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 5)
+                        .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
                     }
                 }
                 .padding(.leading, store.isBatchDeleting ? 106 : 74)
@@ -143,21 +154,6 @@ struct TaskCardView: View {
         .opacity(task.status == 1 ? 0.4 : 1.0)
         .background(isTiming ? StudyPlanTheme.primary.opacity(0.12) : Color.clear)
         .glassCard(cornerRadius: 18)
-        .overlay(alignment: .center) {
-            // 快捷打卡胶囊（仅在允许打卡、未完成、非计时中、且非折叠、且非多选时显示）
-            if store.manualCompletionEnabled && task.status == 0 && !isTiming && !store.isBatchDeleting {
-                Button("点击完成") {
-                    toggleTaskStatus()
-                }
-                .buttonStyle(.plain)
-                .font(.system(size: 11, weight: .bold))
-                .foregroundStyle(StudyPlanTheme.primary)
-                .padding(.horizontal, 10)
-                .padding(.vertical, 4)
-                .background(StudyPlanTheme.primary.opacity(0.12), in: Capsule())
-                .opacity(expanded ? 0 : 1)
-            }
-        }
         .swipeActions(edge: .leading, allowsFullSwipe: false) {
             if store.manualCompletionEnabled {
                 Button {
@@ -184,6 +180,9 @@ struct TaskCardView: View {
             Button("确定", role: .cancel) {}
         } message: {
             Text("请先输入计划时长，例如“25分钟”")
+        }
+        .sheet(isPresented: $showFocusOptions) {
+            TimerOptionsView(task: task)
         }
     }
 
@@ -241,7 +240,7 @@ struct TaskCardView: View {
             showZeroDurationAlert = true
             return
         }
-        store.startTimerForTask(task)
+        showFocusOptions = true
     }
 
     private static let dateFormatter: DateFormatter = {

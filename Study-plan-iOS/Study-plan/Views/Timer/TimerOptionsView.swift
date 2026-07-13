@@ -3,12 +3,17 @@ import SwiftUI
 struct TimerOptionsView: View {
     @EnvironmentObject private var store: StudyPlanStore
     @Environment(\.dismiss) private var dismiss
+    let task: Task?
     @State private var minutes: String = "25"
     @State private var isCountdown = true
     @State private var allowOverflow = false
 
+    init(task: Task? = nil) {
+        self.task = task
+    }
+
     private var activeTask: Task? {
-        store.tasks.first { $0.id == store.timer.activeTaskID }
+        task ?? store.tasks.first { $0.id == store.timer.activeTaskID }
     }
 
     var body: some View {
