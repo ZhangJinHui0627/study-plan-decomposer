@@ -52,7 +52,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     private long timingTaskId = -1;
     private boolean isManualOrder = false;
-    private boolean manualCompletionEnabled = false;
     private final java.util.Set<Long> expandedTaskIds = new java.util.HashSet<>();
 
     public TaskAdapter(List<Task> tasks, OnItemClickListener clickListener) {
@@ -80,13 +79,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public void setMultiSelectMode(boolean multiSelectMode) {
         isMultiSelectMode = multiSelectMode;
-    }
-
-    public void setManualCompletionEnabled(boolean enabled) {
-        if (manualCompletionEnabled != enabled) {
-            manualCompletionEnabled = enabled;
-            notifyDataSetChanged();
-        }
     }
 
     public Set<Long> getSelectedIds() {
@@ -304,9 +296,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         holder.tvDetailInfo.setText("计划时长: " + task.duration + " 分钟"
                 + (task.pages > 0 ? " | 计划阅读: " + task.pages + " 页" : ""));
 
-        // 按照打卡首选项，动态调整工具栏操作按钮文字
-        boolean manualEnabledCheck = ctx.getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE)
-                .getBoolean("pref_manual_complete_enabled", true);
+        // 快捷操作动作绑定（始终显示开始专注与标记完成）
         if (isCompleted) {
             holder.tvDetailAction.setText("重做任务");
             holder.tvDetailAction.setVisibility(View.VISIBLE);
@@ -315,35 +305,22 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
                 clickListener.onItemClick(task.id);
             });
         } else {
-            if (manualEnabledCheck) {
-                holder.tvDetailAction.setText("开始专注");
-                holder.tvDetailAction.setVisibility(View.VISIBLE);
-                holder.tvDetailActionComplete.setText("标记完成");
-                holder.tvDetailActionComplete.setVisibility(View.VISIBLE);
-                holder.tvDetailAction.setOnClickListener(v -> {
-                    if (startFocusClickListener != null) {
-                        startFocusClickListener.onStartFocusClick(task);
-                    }
-                });
-                holder.tvDetailActionComplete.setOnClickListener(v -> {
-                    clickListener.onItemClick(task.id);
-                    CalendarHelper.updateCalendarStatus(ctx, task);
-                    if (task.status == 1 && ctx instanceof MainActivity) {
-                        ((MainActivity) ctx).onTaskCompletedExternally(task.id);
-                    }
-                });
-            } else {
-                holder.tvDetailAction.setText("开始专注");
-                holder.tvDetailAction.setVisibility(View.VISIBLE);
-                holder.tvDetailActionComplete.setVisibility(View.GONE);
-                holder.tvDetailAction.setOnClickListener(v -> {
-                    clickListener.onItemClick(task.id);
-                    CalendarHelper.updateCalendarStatus(ctx, task);
-                    if (task.status == 1 && ctx instanceof MainActivity) {
-                        ((MainActivity) ctx).onTaskCompletedExternally(task.id);
-                    }
-                });
-            }
+            holder.tvDetailAction.setText("开始专注");
+            holder.tvDetailAction.setVisibility(View.VISIBLE);
+            holder.tvDetailActionComplete.setText("标记完成");
+            holder.tvDetailActionComplete.setVisibility(View.VISIBLE);
+            holder.tvDetailAction.setOnClickListener(v -> {
+                if (startFocusClickListener != null) {
+                    startFocusClickListener.onStartFocusClick(task);
+                }
+            });
+            holder.tvDetailActionComplete.setOnClickListener(v -> {
+                clickListener.onItemClick(task.id);
+                CalendarHelper.updateCalendarStatus(ctx, task);
+                if (task.status == 1 && ctx instanceof MainActivity) {
+                    ((MainActivity) ctx).onTaskCompletedExternally(task.id);
+                }
+            });
         }
 
         // 点击整行切换展开折叠

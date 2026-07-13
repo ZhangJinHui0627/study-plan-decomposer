@@ -88,41 +88,6 @@
         android:background="@drawable/bg_glass_card"
         android:padding="6dp">
 
-        <!-- 允许手动打卡开关 -->
-        <LinearLayout
-            android:id="@+id/item_manual_complete"
-            android:layout_width="match_parent"
-            android:layout_height="52dp"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp"
-            android:background="?attr/selectableItemBackground"
-            android:clickable="true"
-            android:focusable="true">
-
-            <ImageView
-                android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:src="@drawable/ic_manual_complete"
-                app:tint="#1F1F1F" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_marginStart="16dp"
-                android:text="允许手动打卡"
-                android:textSize="15sp"
-                android:textColor="#1F1F1F" />
-
-            <androidx.appcompat.widget.SwitchCompat
-                android:id="@+id/sw_manual_complete"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:thumbTint="@color/primary" />
-        </LinearLayout>
-
         <LinearLayout
             android:id="@+id/item_about"
             android:layout_width="match_parent"

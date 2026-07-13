@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 
 public class ProfileFragment extends Fragment {
@@ -21,7 +20,6 @@ public class ProfileFragment extends Fragment {
     private ImageView ivAvatar;
     private View vAvatarBg;
     private TextView tvAvatarText;
-    private SwitchCompat swManualComplete;
 
     @Nullable
     @Override
@@ -34,15 +32,6 @@ public class ProfileFragment extends Fragment {
         ivAvatar = view.findViewById(R.id.iv_avatar);
         vAvatarBg = view.findViewById(R.id.v_avatar_bg);
         tvAvatarText = view.findViewById(R.id.tv_avatar_text);
-
-        swManualComplete = view.findViewById(R.id.sw_manual_complete);
-        SharedPreferences prefs = getContext().getSharedPreferences("study_plan_prefs", 0);
-        swManualComplete.setChecked(prefs.getBoolean("pref_manual_complete_enabled", true));
-        swManualComplete.setOnCheckedChangeListener((buttonView, isChecked) ->
-            prefs.edit().putBoolean("pref_manual_complete_enabled", isChecked).apply()
-        );
-
-        view.findViewById(R.id.item_manual_complete).setOnClickListener(v -> swManualComplete.toggle());
 
         refreshProfile();
 

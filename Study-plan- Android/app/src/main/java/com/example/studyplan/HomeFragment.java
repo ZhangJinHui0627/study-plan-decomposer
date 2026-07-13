@@ -56,10 +56,8 @@ public class HomeFragment extends Fragment {
                     int pos = findTaskPosition(taskId);
                     if (pos < 0) return;
                     Task task = adapter.getTasks().get(pos);
-                    SharedPreferences prefs = requireContext().getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-                    boolean manualEnabled = prefs.getBoolean("pref_manual_complete_enabled", true);
                     TaskInteractionPolicy.TapAction action =
-                            TaskInteractionPolicy.tapAction(manualEnabled, task.status);
+                            TaskInteractionPolicy.tapAction(true, task.status);
                     if (action == TaskInteractionPolicy.TapAction.TOGGLE_STATUS) {
                         int newStatus = dbHelper.toggleTaskStatus(taskId);
                         task.status = newStatus;
@@ -74,11 +72,6 @@ public class HomeFragment extends Fragment {
                     }
                 });
 
-        SharedPreferences initialPrefs = requireContext()
-                .getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-        adapter.setManualCompletionEnabled(
-                initialPrefs.getBoolean("pref_manual_complete_enabled", true));
-
         adapter.setOnStartFocusClickListener(task -> showTimerOptionsDialog(task));
 
         adapter.setOnSelectionChangeListener(count ->
@@ -86,6 +79,8 @@ public class HomeFragment extends Fragment {
 
         rvTasks.setLayoutManager(new LinearLayoutManager(requireContext()));
         rvTasks.setAdapter(adapter);
+        SharedPreferences initialPrefs = requireContext()
+                .getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
         adapter.sortThreeLayers(initialPrefs.getLong("pref_timing_task_id", -1L));
 
         // 底部多选栏按钮
@@ -178,22 +173,7 @@ public class HomeFragment extends Fragment {
                         swipeDeleteDialog.getWindow().setWindowAnimations(0);
                     }
                 } else if (direction == ItemTouchHelper.RIGHT) {
-                    SharedPreferences prefs = requireContext()
-                            .getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-                    boolean manualEnabled = prefs.getBoolean("pref_manual_complete_enabled", true);
-                    if (manualEnabled) {
-                        Task task = adapter.getTasks().get(pos);
-                        int newStatus = dbHelper.toggleTaskStatus(task.id);
-                        task.status = newStatus;
-                        CalendarHelper.updateCalendarStatus(requireContext(), task);
-                        if (task.status == 1 && getActivity() instanceof MainActivity) {
-                            ((MainActivity) getActivity()).onTaskCompletedExternally(task.id);
-                        }
-                        refreshList();
-                        refreshStats();
-                    } else {
-                        enterMultiSelectMode(pos);
-                    }
+                    enterMultiSelectMode(pos);
                 }
             }
 
@@ -205,14 +185,7 @@ public class HomeFragment extends Fragment {
                     View itemView = viewHolder.itemView;
                     Paint p = new Paint();
                     if (dX > 0) {
-                        SharedPreferences prefs = requireContext()
-                                .getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-                        boolean manualEnabled = prefs.getBoolean("pref_manual_complete_enabled", true);
-                        if (manualEnabled) {
-                            p.setColor(Color.parseColor("#4CAF50"));
-                        } else {
-                            p.setColor(Color.parseColor("#1A73E8"));
-                        }
+                        p.setColor(Color.parseColor("#1A73E8"));
                         RectF background = new RectF((float) itemView.getLeft(), (float) itemView.getTop(), dX, (float) itemView.getBottom());
                         c.drawRect(background, p);
 
@@ -255,7 +228,6 @@ public class HomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        refreshManualCompletionSetting();
         refreshList();
     }
 
@@ -263,17 +235,8 @@ public class HomeFragment extends Fragment {
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
         if (!hidden && adapter != null && isAdded()) {
-            refreshManualCompletionSetting();
             refreshList();
         }
-    }
-
-    private void refreshManualCompletionSetting() {
-        if (adapter == null || !isAdded()) return;
-        SharedPreferences prefs = requireContext()
-                .getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-        adapter.setManualCompletionEnabled(
-                prefs.getBoolean("pref_manual_complete_enabled", true));
     }
 
     void refreshList() {
