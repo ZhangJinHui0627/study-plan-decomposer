@@ -50,6 +50,7 @@
                     android:id="@+id/tv_avatar_text"
                     android:layout_width="80dp"
                     android:layout_height="80dp"
+                    android:layout_gravity="center"
                     android:gravity="center"
                     android:text="添加图片"
                     android:textColor="#5F6368"
@@ -103,7 +104,7 @@
             <ImageView
                 android:layout_width="22dp"
                 android:layout_height="22dp"
-                android:src="@drawable/ic_reminder"
+                android:src="@drawable/ic_manual_complete"
                 app:tint="#1F1F1F" />
 
             <TextView

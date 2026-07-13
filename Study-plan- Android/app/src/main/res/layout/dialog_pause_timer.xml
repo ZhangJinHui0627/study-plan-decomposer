@@ -9,35 +9,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="选择要开始的学习计划"
-        android:textColor="@color/text_primary"
+        android:text="暂停/完成"
         android:textSize="18sp"
         android:textStyle="bold"
-        android:layout_marginBottom="16dp" />
+        android:textColor="#1F1F1F"
+        android:layout_marginBottom="12dp" />
 
-    <ScrollView
+    <TextView
+        android:id="@+id/tv_pause_message"
         android:layout_width="match_parent"
-        android:layout_height="320dp">
-
-        <LinearLayout
-            android:id="@+id/ll_timer_task_items"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" />
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:text="是否将当前计划标记为已完成？"
+        android:textColor="#5F6368"
+        android:textSize="14sp"
+        android:layout_marginBottom="24dp" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:gravity="end"
-        android:layout_marginTop="16dp">
+        android:gravity="end">
 
         <TextView
-            android:id="@+id/btn_task_selection_close"
+            android:id="@+id/btn_pause_later"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="关闭"
+            android:text="仅暂停/稍后"
             android:textColor="#5F6368"
             android:textSize="14sp"
             android:gravity="center"
@@ -47,6 +44,24 @@
             android:focusable="true"
             android:background="@drawable/bg_capsule_unselected"
             android:minWidth="96dp"
+            android:minHeight="44dp" />
+
+        <TextView
+            android:id="@+id/btn_pause_complete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="是的，已完成"
+            android:textColor="#1A73E8"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_capsule_selected"
+            android:minWidth="112dp"
             android:minHeight="44dp" />
     </LinearLayout>
 </LinearLayout>

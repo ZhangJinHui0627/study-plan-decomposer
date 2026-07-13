@@ -19,6 +19,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.example.studyplan.DialogHelper;
+
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -251,39 +253,48 @@ public class TimerFragment extends Fragment {
             return;
         }
 
+        View dialogView = LayoutInflater.from(requireContext()).inflate(R.layout.dialog_pause_timer, null);
+        TextView tvMsg = dialogView.findViewById(R.id.tv_pause_message);
+        tvMsg.setText("是否将当前计划「" + activeTask.content + "」标记为已完成？");
+
         AlertDialog pauseStopDialog = new AlertDialog.Builder(requireContext())
-                .setTitle("暂停/完成")
-                .setMessage("是否将当前计划「" + activeTask.content + "」标记为已完成？")
-                .setPositiveButton("是的，已完成", (dialog, which) -> {
-                    dbHelper.updateTaskStatus(activeTask.id, 1);
-                    activeTask.status = 1;
-                    CalendarHelper.updateCalendarStatus(requireContext(), activeTask);
-                    Toast.makeText(requireContext(), "已更新计划状态", Toast.LENGTH_SHORT).show();
-
-                    SharedPreferences prefs = requireContext().getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
-                    prefs.edit().putLong("pref_timing_task_id", -1L).apply();
-
-                    stopTimer();
-                    activeTask = null;
-                    autoLoadNextTask();
-
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).refreshStats();
-                    }
-                })
-                .setNegativeButton("仅暂停/稍后", (dialog, which) -> {
-                    running = false;
-                    paused = true;
-                    handler.removeCallbacks(tickRunnable);
-                    btnStart.setText("继续");
-                    btnStart.setTextColor(requireContext().getColor(R.color.stat_green));
-                    if (getActivity() instanceof MainActivity) {
-                        ((MainActivity) getActivity()).refreshScreenGlow();
-                    }
-                })
+                .setView(dialogView)
                 .create();
+
+        dialogView.findViewById(R.id.btn_pause_complete).setOnClickListener(v -> {
+            dbHelper.updateTaskStatus(activeTask.id, 1);
+            activeTask.status = 1;
+            CalendarHelper.updateCalendarStatus(requireContext(), activeTask);
+            Toast.makeText(requireContext(), "已更新计划状态", Toast.LENGTH_SHORT).show();
+
+            SharedPreferences prefs = requireContext().getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE);
+            prefs.edit().putLong("pref_timing_task_id", -1L).apply();
+
+            stopTimer();
+            activeTask = null;
+            autoLoadNextTask();
+
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).refreshStats();
+            }
+            pauseStopDialog.dismiss();
+        });
+
+        dialogView.findViewById(R.id.btn_pause_later).setOnClickListener(v -> {
+            running = false;
+            paused = true;
+            handler.removeCallbacks(tickRunnable);
+            btnStart.setText("继续");
+            btnStart.setTextColor(requireContext().getColor(R.color.stat_green));
+            if (getActivity() instanceof MainActivity) {
+                ((MainActivity) getActivity()).refreshScreenGlow();
+            }
+            pauseStopDialog.dismiss();
+        });
+
         pauseStopDialog.show();
         if (pauseStopDialog.getWindow() != null) {
+            pauseStopDialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
             pauseStopDialog.getWindow().setWindowAnimations(0);
         }
     }
@@ -409,6 +420,7 @@ public class TimerFragment extends Fragment {
                     .setNegativeButton("取消", null)
                     .create();
             changeTaskConfirm.show();
+            DialogHelper.styleDialog(changeTaskConfirm, false);
             if (changeTaskConfirm.getWindow() != null) {
                 changeTaskConfirm.getWindow().setWindowAnimations(0);
             }
@@ -429,6 +441,8 @@ public class TimerFragment extends Fragment {
                     String.format(Locale.getDefault(), "[%s] %s（%d 分钟）", task.subject, task.content, task.duration),
                     v -> selectTimerTask(task, listDialog));
         }
+        dialogView.findViewById(R.id.btn_task_selection_close).setOnClickListener(v -> listDialog.dismiss());
+
         listDialog.show();
         if (listDialog.getWindow() != null) {
             listDialog.getWindow().setBackgroundDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
@@ -507,6 +521,7 @@ public class TimerFragment extends Fragment {
                     .setCancelable(false)
                     .create();
             finishDialog.show();
+            DialogHelper.styleDialog(finishDialog, false);
             if (finishDialog.getWindow() != null) {
                 finishDialog.getWindow().setWindowAnimations(0);
             }
@@ -523,6 +538,7 @@ public class TimerFragment extends Fragment {
                     .setCancelable(false)
                     .create();
             endDialog.show();
+            DialogHelper.styleDialog(endDialog, false);
             if (endDialog.getWindow() != null) {
                 endDialog.getWindow().setWindowAnimations(0);
             }

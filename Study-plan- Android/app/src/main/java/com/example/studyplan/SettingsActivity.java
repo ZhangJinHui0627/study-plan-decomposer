@@ -12,6 +12,8 @@ import android.graphics.PorterDuffColorFilter;
 import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.os.Bundle;
+import com.example.studyplan.DialogHelper;
+
 import android.provider.MediaStore;
 import android.view.View;
 import android.widget.EditText;
@@ -155,8 +157,14 @@ public class SettingsActivity extends AppCompatActivity {
             TextView tvCancel = new TextView(this);
             tvCancel.setText("取消");
             tvCancel.setTextColor(Color.parseColor("#5F6368"));
-            tvCancel.setTextSize(15);
-            tvCancel.setPadding(24, 12, 24, 12);
+            tvCancel.setTextSize(14);
+            tvCancel.setGravity(android.view.Gravity.CENTER);
+            tvCancel.setBackgroundResource(R.drawable.bg_capsule_unselected);
+            LinearLayout.LayoutParams lpCancel = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, (int)(44 * density));
+            lpCancel.rightMargin = (int)(12 * density);
+            tvCancel.setLayoutParams(lpCancel);
+            tvCancel.setPadding((int)(24 * density), 0, (int)(24 * density), 0);
             tvCancel.setClickable(true);
             tvCancel.setFocusable(true);
             tvCancel.setOnClickListener(view -> dialog.dismiss());
@@ -165,9 +173,14 @@ public class SettingsActivity extends AppCompatActivity {
             TextView tvClear = new TextView(this);
             tvClear.setText("清空");
             tvClear.setTextColor(Color.parseColor("#E53935"));
-            tvClear.setTextSize(15);
+            tvClear.setTextSize(14);
             tvClear.setTypeface(null, android.graphics.Typeface.BOLD);
-            tvClear.setPadding(24, 12, 24, 12);
+            tvClear.setGravity(android.view.Gravity.CENTER);
+            tvClear.setBackgroundResource(R.drawable.bg_capsule_danger);
+            LinearLayout.LayoutParams lpClear = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.WRAP_CONTENT, (int)(44 * density));
+            tvClear.setLayoutParams(lpClear);
+            tvClear.setPadding((int)(24 * density), 0, (int)(24 * density), 0);
             tvClear.setClickable(true);
             tvClear.setFocusable(true);
             tvClear.setOnClickListener(view -> {
@@ -226,8 +239,8 @@ public class SettingsActivity extends AppCompatActivity {
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
         float density = getResources().getDisplayMetrics().density;
-        layout.setPadding((int) (28 * density), (int) (24 * density),
-                (int) (28 * density), (int) (24 * density));
+        int padVal = (int) (24 * density);
+        layout.setPadding(padVal, padVal, padVal, padVal);
         layout.setGravity(android.view.Gravity.CENTER_HORIZONTAL);
         layout.setBackgroundResource(R.drawable.bg_dialog_card);
 
@@ -353,8 +366,14 @@ public class SettingsActivity extends AppCompatActivity {
         TextView tvCancel = new TextView(this);
         tvCancel.setText("取消");
         tvCancel.setTextColor(Color.parseColor("#5F6368"));
-        tvCancel.setTextSize(15);
-        tvCancel.setPadding(24, 12, 24, 12);
+        tvCancel.setTextSize(14);
+        tvCancel.setGravity(android.view.Gravity.CENTER);
+        tvCancel.setBackgroundResource(R.drawable.bg_capsule_unselected);
+        LinearLayout.LayoutParams lpCancel = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, (int)(44 * density));
+        lpCancel.rightMargin = (int)(12 * density);
+        tvCancel.setLayoutParams(lpCancel);
+        tvCancel.setPadding((int)(24 * density), 0, (int)(24 * density), 0);
         tvCancel.setClickable(true);
         tvCancel.setFocusable(true);
         tvCancel.setOnClickListener(v -> dialog.dismiss());
@@ -363,9 +382,14 @@ public class SettingsActivity extends AppCompatActivity {
         TextView tvSave = new TextView(this);
         tvSave.setText("保存");
         tvSave.setTextColor(Color.parseColor("#1A73E8"));
-        tvSave.setTextSize(15);
+        tvSave.setTextSize(14);
         tvSave.setTypeface(null, android.graphics.Typeface.BOLD);
-        tvSave.setPadding(24, 12, 24, 12);
+        tvSave.setGravity(android.view.Gravity.CENTER);
+        tvSave.setBackgroundResource(R.drawable.bg_capsule_selected);
+        LinearLayout.LayoutParams lpSave = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, (int)(44 * density));
+        tvSave.setLayoutParams(lpSave);
+        tvSave.setPadding((int)(24 * density), 0, (int)(24 * density), 0);
         tvSave.setClickable(true);
         tvSave.setFocusable(true);
         tvSave.setOnClickListener(v -> {
@@ -642,12 +666,15 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showSubjectRulesDialog() {
         TaskDatabaseHelper dbHelper = new TaskDatabaseHelper(this);
+        float density = getResources().getDisplayMetrics().density;
 
         AlertDialog dialog = new AlertDialog.Builder(this).create();
 
         LinearLayout layout = new LinearLayout(this);
         layout.setOrientation(LinearLayout.VERTICAL);
-        layout.setPadding(48, 36, 48, 36);
+        int padLeftRight = (int) (24 * density);
+        int padTopBottom = (int) (20 * density);
+        layout.setPadding(padLeftRight, padTopBottom, padLeftRight, padTopBottom);
         layout.setBackgroundResource(R.drawable.bg_dialog_card);
 
         // 标题
@@ -676,10 +703,10 @@ public class SettingsActivity extends AppCompatActivity {
 
         android.widget.Button btnAdd = new android.widget.Button(this);
         btnAdd.setText("添加");
-        btnAdd.setTextColor(Color.parseColor("#1F1F1F"));
-        btnAdd.setBackgroundResource(R.drawable.bg_dialog_btn);
+        btnAdd.setTextColor(Color.parseColor("#1A73E8"));
+        btnAdd.setBackgroundResource(R.drawable.bg_capsule_selected);
         LinearLayout.LayoutParams lpBtnAdd = new LinearLayout.LayoutParams(
-                LinearLayout.LayoutParams.WRAP_CONTENT, (int) (38 * getResources().getDisplayMetrics().density));
+                LinearLayout.LayoutParams.WRAP_CONTENT, (int) (44 * getResources().getDisplayMetrics().density));
         lpBtnAdd.leftMargin = 12;
         btnAdd.setLayoutParams(lpBtnAdd);
         inputLayout.addView(btnAdd);
@@ -735,10 +762,11 @@ public class SettingsActivity extends AppCompatActivity {
                     TextView tvDelete = new TextView(SettingsActivity.this);
                     tvDelete.setText("删除");
                     tvDelete.setTextColor(Color.parseColor("#E53935"));
-                    tvDelete.setPadding(16, 8, 16, 8);
+                    tvDelete.setGravity(android.view.Gravity.CENTER);
+                    tvDelete.setBackgroundResource(R.drawable.bg_capsule_danger);
+                    tvDelete.setPadding((int)(16 * rowDensity), (int)(6 * rowDensity), (int)(16 * rowDensity), (int)(6 * rowDensity));
                     tvDelete.setClickable(true);
                     tvDelete.setFocusable(true);
-                    tvDelete.setBackgroundResource(rippleRes);
                     tvDelete.setOnClickListener(v -> {
                         dbHelper.deleteSubject(subject);
                         run(); // 刷新
@@ -776,13 +804,16 @@ public class SettingsActivity extends AppCompatActivity {
 
         TextView tvClose = new TextView(this);
         tvClose.setText("关闭");
-        tvClose.setTextColor(Color.parseColor("#1A73E8"));
-        tvClose.setTextSize(15);
-        tvClose.setTypeface(null, android.graphics.Typeface.BOLD);
-        tvClose.setPadding(24, 12, 24, 12);
+        tvClose.setTextColor(Color.parseColor("#5F6368"));
+        tvClose.setTextSize(14);
+        tvClose.setGravity(android.view.Gravity.CENTER);
+        tvClose.setBackgroundResource(R.drawable.bg_capsule_unselected);
+        LinearLayout.LayoutParams lpClose = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.WRAP_CONTENT, (int)(44 * density));
+        tvClose.setLayoutParams(lpClose);
+        tvClose.setPadding((int)(24 * density), 0, (int)(24 * density), 0);
         tvClose.setClickable(true);
         tvClose.setFocusable(true);
-        tvClose.setBackgroundResource(rippleRes);
         tvClose.setOnClickListener(v -> dialog.dismiss());
         buttonLayout.addView(tvClose);
 

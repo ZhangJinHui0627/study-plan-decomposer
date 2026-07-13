@@ -31,14 +31,17 @@
         android:padding="12dp"
         android:textSize="@dimen/text_body" />
 
-    <Button
+    <TextView
         android:id="@+id/btn_add_parse"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height"
-        android:layout_marginTop="12dp"
+        android:layout_height="44dp"
+        android:layout_marginTop="16dp"
         android:text="解析并添加"
-        android:textColor="#1F1F1F"
-        android:textSize="@dimen/text_body"
-        android:background="@drawable/bg_capsule_selected"
-        android:minHeight="48dp" />
+        android:textColor="#1A73E8"
+        android:textSize="14sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="@drawable/bg_capsule_selected" />
 </LinearLayout>

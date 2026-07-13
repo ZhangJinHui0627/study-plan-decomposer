@@ -79,6 +79,8 @@ public class HomeFragment extends Fragment {
         adapter.setManualCompletionEnabled(
                 initialPrefs.getBoolean("pref_manual_complete_enabled", true));
 
+        adapter.setOnStartFocusClickListener(task -> showTimerOptionsDialog(task));
+
         adapter.setOnSelectionChangeListener(count ->
                 ((TextView) view.findViewById(R.id.tv_selected_count)).setText("已选择 " + count + " 项"));
 
@@ -407,7 +409,7 @@ public class HomeFragment extends Fragment {
         builder.setView(dialogView);
 
         EditText etInput = dialogView.findViewById(R.id.et_add_input);
-        Button btnParse = dialogView.findViewById(R.id.btn_add_parse);
+        TextView btnParse = dialogView.findViewById(R.id.btn_add_parse);
 
         AlertDialog dialog = builder.create();
 
@@ -499,6 +501,8 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
+
+        dialogView.findViewById(R.id.btn_search_close).setOnClickListener(v -> dialog.dismiss());
 
         dialog.setOnShowListener(d -> {
             etSearch.requestFocus();

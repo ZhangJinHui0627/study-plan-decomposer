@@ -1,6 +1,7 @@
 package com.example.studyplan;
 
 import android.Manifest;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.Menu;
@@ -32,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences initialPrefs = getSharedPreferences("study_plan_prefs", MODE_PRIVATE);
+        if (!initialPrefs.contains("pref_manual_complete_enabled")) {
+            initialPrefs.edit().putBoolean("pref_manual_complete_enabled", true).apply();
+        }
         VersionConfig.init(this);
         setContentView(R.layout.activity_main);
         screenGlowFrame = findViewById(R.id.screen_glow_frame);

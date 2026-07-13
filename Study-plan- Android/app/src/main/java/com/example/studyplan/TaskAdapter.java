@@ -34,12 +34,17 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         void onItemClick(long taskId);
     }
 
+    public interface OnStartFocusClickListener {
+        void onStartFocusClick(Task task);
+    }
+
     public interface OnSelectionChangeListener {
         void onSelectionChanged(int count);
     }
 
     private List<Task> tasks;
     private final OnItemClickListener clickListener;
+    private OnStartFocusClickListener startFocusClickListener;
     private OnSelectionChangeListener selectChangeListener;
 
     private boolean isMultiSelectMode = false;
@@ -90,6 +95,10 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
 
     public void setOnSelectionChangeListener(OnSelectionChangeListener listener) {
         this.selectChangeListener = listener;
+    }
+
+    public void setOnStartFocusClickListener(OnStartFocusClickListener listener) {
+        this.startFocusClickListener = listener;
     }
 
     public long getTimingTaskId() {
@@ -242,9 +251,6 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         boolean isTiming = task.id == timingTaskId;
         boolean isCompleted = task.status == 1;
         boolean isOverdue = checkIsOverdue(task);
-        holder.tvClickComplete.setVisibility(
-                manualCompletionEnabled && !isCompleted && !isTiming && !isMultiSelectMode
-                        ? View.VISIBLE : View.GONE);
 
         if (isTiming) {
             // 计时中：蓝色玻璃卡片，不带中划线，文字默认
@@ -301,21 +307,44 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
         // 按照打卡首选项，动态调整工具栏操作按钮文字
         boolean manualEnabledCheck = ctx.getSharedPreferences("study_plan_prefs", Context.MODE_PRIVATE)
                 .getBoolean("pref_manual_complete_enabled", true);
-        if (manualEnabledCheck) {
-            holder.tvDetailAction.setText(task.status == 1 ? "重做任务" : "标记完成");
+        if (isCompleted) {
+            holder.tvDetailAction.setText("重做任务");
+            holder.tvDetailAction.setVisibility(View.VISIBLE);
+            holder.tvDetailActionComplete.setVisibility(View.GONE);
+            holder.tvDetailAction.setOnClickListener(v -> {
+                clickListener.onItemClick(task.id);
+            });
         } else {
-            holder.tvDetailAction.setText(task.status == 1 ? "重做任务" : "开始专注");
-        }
-
-        // 快捷操作动作绑定
-        holder.tvDetailAction.setOnClickListener(v -> {
-            clickListener.onItemClick(task.id);
-            // 同步日历日程状态
-            CalendarHelper.updateCalendarStatus(ctx, task);
-            if (task.status == 1 && ctx instanceof MainActivity) {
-                ((MainActivity) ctx).onTaskCompletedExternally(task.id);
+            if (manualEnabledCheck) {
+                holder.tvDetailAction.setText("开始专注");
+                holder.tvDetailAction.setVisibility(View.VISIBLE);
+                holder.tvDetailActionComplete.setText("标记完成");
+                holder.tvDetailActionComplete.setVisibility(View.VISIBLE);
+                holder.tvDetailAction.setOnClickListener(v -> {
+                    if (startFocusClickListener != null) {
+                        startFocusClickListener.onStartFocusClick(task);
+                    }
+                });
+                holder.tvDetailActionComplete.setOnClickListener(v -> {
+                    clickListener.onItemClick(task.id);
+                    CalendarHelper.updateCalendarStatus(ctx, task);
+                    if (task.status == 1 && ctx instanceof MainActivity) {
+                        ((MainActivity) ctx).onTaskCompletedExternally(task.id);
+                    }
+                });
+            } else {
+                holder.tvDetailAction.setText("开始专注");
+                holder.tvDetailAction.setVisibility(View.VISIBLE);
+                holder.tvDetailActionComplete.setVisibility(View.GONE);
+                holder.tvDetailAction.setOnClickListener(v -> {
+                    clickListener.onItemClick(task.id);
+                    CalendarHelper.updateCalendarStatus(ctx, task);
+                    if (task.status == 1 && ctx instanceof MainActivity) {
+                        ((MainActivity) ctx).onTaskCompletedExternally(task.id);
+                    }
+                });
             }
-        });
+        }
 
         // 点击整行切换展开折叠
         holder.itemRow.setOnClickListener(v -> {
@@ -372,7 +401,7 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
     static class ViewHolder extends RecyclerView.ViewHolder {
         LinearLayout cardContainer, itemRow, llExpandedDetails;
         View vAvatarBg;
-        TextView tvAvatarText, tvTitle, tvPreview, tvDate, tvClickComplete, tvDetailInfo, tvDetailAction;
+        TextView tvAvatarText, tvTitle, tvPreview, tvDate, tvDetailInfo, tvDetailAction, tvDetailActionComplete;
         CheckBox cbSelect;
 
         ViewHolder(View itemView) {
@@ -385,9 +414,9 @@ public class TaskAdapter extends RecyclerView.Adapter<TaskAdapter.ViewHolder> {
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvPreview = itemView.findViewById(R.id.tv_preview);
             tvDate = itemView.findViewById(R.id.tv_date);
-            tvClickComplete = itemView.findViewById(R.id.tv_click_complete);
             tvDetailInfo = itemView.findViewById(R.id.tv_detail_info);
             tvDetailAction = itemView.findViewById(R.id.tv_detail_action);
+            tvDetailActionComplete = itemView.findViewById(R.id.tv_detail_action_complete);
             cbSelect = itemView.findViewById(R.id.cb_select);
         }
     }

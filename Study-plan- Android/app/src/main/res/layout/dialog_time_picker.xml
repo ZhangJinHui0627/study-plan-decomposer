@@ -50,22 +50,38 @@
         android:gravity="end"
         android:orientation="horizontal">
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/btn_dialog_cancel"
-            style="Widget.MaterialComponents.Button.TextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="取消"
             android:textColor="#5F6368"
-            android:layout_marginEnd="8dp" />
+            android:textSize="14sp"
+            android:gravity="center"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="@drawable/bg_capsule_unselected"
+            android:minWidth="96dp"
+            android:minHeight="44dp" />
 
-        <com.google.android.material.button.MaterialButton
+        <TextView
             android:id="@+id/btn_dialog_save"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="保存"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="@color/primary"
-            app:cornerRadius="12dp" />
+            android:textColor="#1A73E8"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:paddingStart="24dp"
+            android:paddingEnd="24dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginStart="12dp"
+            android:background="@drawable/bg_capsule_selected"
+            android:minWidth="96dp"
+            android:minHeight="44dp" />
     </LinearLayout>
 </LinearLayout>
