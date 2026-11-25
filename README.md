@@ -67,7 +67,7 @@ xcodebuild -project Study-plan.xcodeproj \
 ## 目录结构
 
 ```text
-Study-Plan/
+StudioProjects/
 ├── Study-plan- Android/       Android 客户端
 ├── Study-plan-iOS/            iOS 客户端
 ├── Documents/                 项目文档归档目录
